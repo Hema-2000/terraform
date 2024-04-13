@@ -1,0 +1,96 @@
+provider "aws" {
+    region = var.new_region
+}
+
+resource "aws_instance" "web1"{
+    ami = var.new_ami
+    instance_type = var.new_instance_type   
+    tags = {
+    Name        =  var.new_Name
+    }
+}
+
+
+
+resource "aws_vpc" "myvpc"{
+    cidr_block=var.vpc_cidr
+}
+
+resource "aws_internet_gateway" "web_igw"{
+    vpc_id = aws_vpc.myvpc.id
+} 
+
+resource "aws_subnet" "sub1"{
+    vpc_id = aws_vpc.myvpc.id
+    cidr_block = var.pri_sub_cidr_block
+    availability_zone=var.pri_availability_zone
+    tags = {name = var.tag_name}
+}
+
+resource "aws_subnet" "sub2"{
+    vpc_id = aws_vpc.myvpc.id
+    cidr_block = var.pub_sub_cidr_block
+    availability_zone=var.pub_availability_zone
+    tags = {name = var.tag_name}
+}
+
+resource "aws_route_table" "pri_rt"{
+   vpc_id = aws_vpc.myvpc.id
+   tags ={ name = var.pri_rt} 
+}
+
+resource "aws_route_table" "pub_rt"{
+   vpc_id = aws_vpc.myvpc.id
+   tags ={ name = var.pub_rt} 
+}
+
+resource "aws_route" "pub_rt"{
+    route_table_id=aws_route_table.pub_rt.id
+    gateway_id=aws_internet_gateway.web_igw.id
+    destination_cidr_block = var.destination_cidr_block
+
+}
+
+resource "aws_route_table_association" "subnet_a_public_association"{
+    subnet_id =aws_subnet.sub2.id
+    route_table_id=aws_route_table.pub_rt.id
+}
+
+
+
+
+
+
+variables.tf
+variable "new_ami"{}
+variable "new_instance_type"{}
+variable "new_region"{}
+variable "new_Name"{}
+variable "pri_sub_cidr_block"{}
+variable "pri_availability_zone"{}
+variable "pub_sub_cidr_block"{}
+variable "vpc_cidr"{}
+variable "pub_availability_zone"{}
+variable "tag_name"{}
+variable "pub_rt"{}
+variable "pri_rt"{}
+variable "destination_cidr_block"{}
+
+
+
+
+terraform.tfvars
+
+new_ami = "ami-080e1f13689e07408"
+new_instance_type = "t2.micro"
+new_Name  = "ExampleInstance"
+new_region = "us-east-1"
+vpc_cidr = "192.168.0.0/16"
+pri_sub_cidr_block ="192.168.1.0/24"
+pri_availability_zone = "us-east-1a"
+pub_sub_cidr_block ="192.168.2.0/24"
+pub_availability_zone = "us-east-1b"
+tag_name = "webserver"
+pub_rt="public_route"
+pri_rt="private_route"
+destination_cidr_block ="0.0.0.0/0"
