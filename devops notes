@@ -10,3 +10,8 @@ https://edueki.com/tutorial/
 
 terraform documentation
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+
+
+----> for aws configuartion to install aws (for the purpose giving inputs at run time for authentication)
+install awscli for aws configuration
+https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
