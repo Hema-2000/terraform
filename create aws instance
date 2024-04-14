@@ -1,0 +1,90 @@
+provider "aws" {
+    region = "us-east-1"
+    #access_key = ""
+    #secret_key = ""
+}
+
+resource "aws_instance" "web1"{
+    ami = "ami-080e1f13689e07408"
+    instance_type = "t2.micro"
+    #key_name = "Ansible_key_march18th.ppk"
+    tags = {
+    Name        = "ExampleInstance"
+    }
+}
+
+
+
+
+
+
+main.tf
+
+provider "aws" {
+    region = var.new_region
+    access_key =  var.new_access_key
+    secret_key = var.new_secret_key
+}
+
+resource "aws_instance" "web1"{
+    ami = var.new_ami
+    instance_type = var.new_instance_type   
+   # key_name = var.new_key_name
+    tags = {
+    Name        =  var.new_Name
+    }
+}
+
+resource "aws_vpc" "myvpc"{
+    cidr_block=var.vpc_cidr
+}
+
+
+variables.tf
+
+variable "new_ami"{
+
+}
+variable "new_instance_type"{
+
+}
+variable "new_key_name"{
+
+}
+variable "new_Name"{
+
+}
+variable "new_region"{
+
+}
+variable "new_access_key"{
+
+}
+variable "new_secret_key"{
+
+}
+variable "vpc_cidr"{
+    
+}
+
+
+
+terraform.tfvars
+
+new_ami = "ami-080e1f13689e07408"
+new_instance_type = "t2.micro"
+new_key_name = "Ansible_key_march18th.ppk"
+new_Name  = "ExampleInstance"
+new_region = "us-east-1"
+new_access_key = ""
+new_secret_key = ""
+vpc_cidr = "192.168.0.0/16"
+
+
+
+output block
+
+output "vpc_id"{
+    value=aws_vpc.myvpc.id
+}
+
