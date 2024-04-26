@@ -12,6 +12,10 @@ terraform documentation
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs
 
 
+terrafom interview quetions
+https://www.youtube.com/watch?v=8oNbpS2gcx4
+
+
 ----> for aws configuartion to install aws (for the purpose giving inputs at run time for authentication)
 install awscli for aws configuration
 https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
